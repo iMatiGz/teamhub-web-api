@@ -1,0 +1,26 @@
+{
+  "name": "teamhub-web-api",
+  "version": "1.0.0",
+  "description": "API - Created using Express.JS and NodeJS to interact with TeamHub Web Application (teamhub-web-app | repository).",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "npm start index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "iMatiGz",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "2.8.5",
+    "dotenv": "16.4.5",
+    "express": "4.19.2",
+    "jsonwebtoken": "9.0.2",
+    "mysql2": "3.10.2",
+    "sequelize": "6.37.3",
+    "uuid": "10.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "3.1.4"
+  }
+}
