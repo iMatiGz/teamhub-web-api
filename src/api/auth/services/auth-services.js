@@ -1,6 +1,6 @@
 import models from '../../../config/sequelize/associations/associations.js';
 
-export class UserServices {
+export class AuthServices {
   constructor() {
     this.models = models;
   }
