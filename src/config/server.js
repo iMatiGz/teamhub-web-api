@@ -4,6 +4,7 @@ import cors from 'cors';
 import userRouter from '../api/users/routes/user-router.js';
 import authRouter from '../api/auth/routes/auth-router.js';
 import serverRouter from '../api/servers/routes/server-router.js';
+import cookieParser from 'cookie-parser';
 
 export class Server {
   constructor() {
@@ -14,8 +15,9 @@ export class Server {
 
   middlewares = () => {
     this.server.disable('x-powered-by');
-    this.server.use(cors());
+    this.server.use(cors({ credentials: true, origin: (origin, callback) => callback(null, origin) }));
     this.server.use(json({ limit: '10mb' }));
+    this.server.use(cookieParser());
 
     this.server.use('/api', authRouter);
     this.server.use('/api/users', userRouter);

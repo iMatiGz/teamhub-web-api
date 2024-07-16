@@ -1,11 +1,12 @@
-import { UserService } from '../services/user-services.js';
+import { UserSearchCases } from '../use-cases/user-search-cases.js';
 
 export class UserGetController {
-  userService = new UserService();
+  constructor() {
+    this.search = new UserSearchCases();
+  }
 
   test = async (req, res) => {
-    const result = await this.userService.searchAll();
-
+    const result = await this.search.searchUserById(10);
     return res.json(result);
   };
 }

@@ -30,6 +30,10 @@ export const User = sequelize.define(
     profile_image: {
       type: DataTypes.STRING,
     },
+    status_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
   },
   {
     tableName: 'users',

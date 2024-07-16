@@ -1,24 +1,13 @@
 import models from '../../../config/sequelize/associations/associations.js';
-import { connection } from '../../../config/sequelize/connection.js';
 
 export class ServerServices {
   constructor() {
-    this.sql = connection;
+    this.models = models;
   }
 
-  searchByUserId = async userId => {
+  searchOne = async (options = {}) => {
     try {
-      return await models.Server.findAll({
-        include: [
-          {
-            model: models.User,
-            as: 'user',
-            attributes: [],
-            where: { user_id: userId },
-            through: { attributes: [] },
-          },
-        ],
-      });
+      return await this.models.Server.findAll({ ...options, raw: true });
     } catch (err) {
       return false;
     }
