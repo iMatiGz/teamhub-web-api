@@ -4,6 +4,7 @@ import { Server } from '../models/server-model.js';
 import { User } from '../models/user-model.js';
 import { UserStatus } from '../models/user-status-model.js';
 import { ServerOnBoarding } from '../models/server_onboarding-model.js';
+import { UserFriendship } from '../models/user-friendship-model.js';
 
 Message.belongsTo(User, {
   foreignKey: 'user_id',
@@ -38,10 +39,27 @@ User.belongsTo(UserStatus, {
   as: 'status',
 });
 
-UserStatus.hasMany(User, {
-  foreignKey: 'status_id',
-  as: 'user',
+// UserStatus.hasMany(User, {
+//   foreignKey: 'status_id',
+//   as: 'user',
+// });
+
+User.belongsToMany(User, {
+  as: 'friends',
+  through: UserFriendship,
+  foreignKey: 'user_id',
+  otherKey: 'friend_id',
 });
+
+User.belongsToMany(User, {
+  as: 'friendOf',
+  through: UserFriendship,
+  foreignKey: 'friend_id',
+  otherKey: 'user_id',
+});
+
+UserFriendship.belongsTo(User, { foreignKey: 'friend_id', as: 'friend' });
+UserFriendship.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
 
 Server.hasMany(Channel, {
   foreignKey: 'server_id',
@@ -59,6 +77,7 @@ const models = {
   Server,
   Message,
   UserStatus,
+  UserFriendship,
 };
 
 export default models;

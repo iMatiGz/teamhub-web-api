@@ -33,6 +33,10 @@ export const User = sequelize.define(
     status_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      references: {
+        model: 'userStatus',
+        key: 'status_id',
+      },
     },
   },
   {
