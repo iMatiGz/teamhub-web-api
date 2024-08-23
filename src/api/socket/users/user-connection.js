@@ -55,4 +55,23 @@ export const userConnectionEvents = (socket, users) => {
       return false;
     }
   });
+
+  socket.on('channelCreated', async channelData => {
+    try {
+      await connection.query(`INSERT INTO channels (server_id, name) VALUES (?, ?)`, {
+        replacements: [channelData.serverId, channelData.channelName],
+        type: QueryTypes.INSERT,
+      });
+
+      const newChannel = await connection.query(
+        `SELECT channel_id, server_id, name FROM channels ORDER BY channel_id DESC LIMIT 1`,
+        { type: QueryTypes.SELECT }
+      );
+
+      socket.emit('newChannelCreated', newChannel[0]);
+      socket.broadcast.emit('newChannelCreated', newChannel[0]);
+    } catch {
+      return false;
+    }
+  });
 };

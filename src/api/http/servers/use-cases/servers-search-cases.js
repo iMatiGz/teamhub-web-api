@@ -10,18 +10,15 @@ export class ServerSearchCases {
   }
 
   searchServersByUserId = async userId => {
-    const servers = await this.sql.searchOne({
-      include: [
-        {
-          model: models.User,
-          as: 'user',
-          attributes: [],
-          where: { user_id: userId },
-          through: { attributes: [] },
-        },
-      ],
-      limit: 10,
-    });
+    const servers = await connection.query(
+      `SELECT server.server_id, SERVER.name, SERVER.icon 
+      FROM server_onboarding
+      INNER JOIN servers AS SERVER 
+      ON server_onboarding.server_id = SERVER.server_id
+      AND server_onboarding.user_id = ?;
+    `,
+      { replacements: [userId], type: QueryTypes.SELECT }
+    );
     return servers;
   };
 
@@ -59,8 +56,8 @@ export class ServerSearchCases {
 
   newServer = async (serverName, userId) => {
     try {
-      await connection.query('INSERT INTO servers (name) VALUES (?)', {
-        replacements: [serverName],
+      await connection.query('INSERT INTO servers (name, creator_id) VALUES (?, ?)', {
+        replacements: [serverName, userId],
         type: QueryTypes.INSERT,
       });
 
