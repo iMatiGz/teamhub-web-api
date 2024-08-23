@@ -74,4 +74,19 @@ export const userConnectionEvents = (socket, users) => {
       return false;
     }
   });
+
+  socket.on('messageDeleted', async message => {
+    try {
+      await connection.query(`DELETE FROM messages WHERE message_id = ?`, {
+        replacements: [message.id],
+        type: QueryTypes.DELETE,
+      });
+
+      socket.emit('messageGotDeleted', message);
+      socket.broadcast.emit('messageGotDeleted', message);
+    } catch {
+      console.log('Error');
+      return false;
+    }
+  });
 };
