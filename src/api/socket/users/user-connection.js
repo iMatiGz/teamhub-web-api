@@ -75,6 +75,21 @@ export const userConnectionEvents = (socket, users) => {
     }
   });
 
+  socket.on('channelDeleted', async channel => {
+    try {
+      await connection.query(`DELETE FROM channels WHERE channel_id = ?`, {
+        replacements: [channel.id],
+        type: QueryTypes.DELETE,
+      });
+
+      socket.emit('channelGotDeleted', channel);
+      socket.broadcast.emit('channelGotDeleted', channel);
+    } catch {
+      console.log('Error');
+      return false;
+    }
+  });
+
   socket.on('messageDeleted', async message => {
     try {
       await connection.query(`DELETE FROM messages WHERE message_id = ?`, {
